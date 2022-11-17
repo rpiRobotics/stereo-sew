@@ -1,13 +1,10 @@
-V =  rand([3 1]);
-V = V / norm(V);
+V = rand_normal_vec;
+R = rand_perp_normal_vec(V);
 
-R = cross(rand([3 1]), V);
-R = R / norm(R);
-
-conv = sew_conv([1;0;0])
+conv = sew_conv(V);
 test_sew_class(conv)
 
-stereo = sew_stereo(R,V)
+stereo = sew_stereo(R,V);
 test_sew_class(stereo)
 
 function test_sew_class(SEW)
@@ -15,9 +12,9 @@ ex = [1;0;0];
 ey = [0;1;0];
 ez = [0;0;1];
 
-S = rand([3 1]);
-E = rand([3 1]);
-W = rand([3 1]);
+S = rand_vec;
+E = rand_vec;
+W = rand_vec;
 
 psi = SEW.fwd_kin(S, E, W);
 
@@ -31,17 +28,18 @@ norm(cross(k,p))
 delta = 1e-8;
 
 J_e_num = ...
-[(SEW.fwd_kin(S, E+delta*ex, W) - SEW.fwd_kin(S, E, W))/delta
- (SEW.fwd_kin(S, E+delta*ey, W) - SEW.fwd_kin(S, E, W))/delta
- (SEW.fwd_kin(S, E+delta*ez, W) - SEW.fwd_kin(S, E, W))/delta]';
+[(SEW.fwd_kin(S, E+delta*ex, W) - psi)/delta
+ (SEW.fwd_kin(S, E+delta*ey, W) - psi)/delta
+ (SEW.fwd_kin(S, E+delta*ez, W) - psi)/delta]';
 
 J_w_num = ...
-[(SEW.fwd_kin(S, E, W+delta*ex) - SEW.fwd_kin(S, E, W))/delta
- (SEW.fwd_kin(S, E, W+delta*ey) - SEW.fwd_kin(S, E, W))/delta
- (SEW.fwd_kin(S, E, W+delta*ez) - SEW.fwd_kin(S, E, W))/delta]';
+[(SEW.fwd_kin(S, E, W+delta*ex) - psi)/delta
+ (SEW.fwd_kin(S, E, W+delta*ey) - psi)/delta
+ (SEW.fwd_kin(S, E, W+delta*ez) - psi)/delta]';
 
 norm(J_e - J_e_num)
 norm(J_w - J_w_num)
+
 end
 
 function n = vec_normalize(vec)

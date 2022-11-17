@@ -25,6 +25,19 @@ classdef sew_stereo
 
         end
 
+        function psi = alt_fwd_kin(obj, S, E, W)
+            E = E - S;
+            W = W - S;
+            w_hat = vec_normalize(W);
+            
+            n_sew = cross(W,E);
+            n_phi = -cross(w_hat - obj.R, n_sew);
+            
+            psi = atan2( ...
+                    n_phi'*cross(-obj.R, obj.V), ...
+                    n_phi'*obj.V);
+        end
+
         function k = inv_kin(obj, S, W, psi)
             W_hat = vec_normalize(W-S);
             
