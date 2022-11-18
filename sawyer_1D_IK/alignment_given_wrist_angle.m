@@ -39,20 +39,29 @@ for q_1 = q_1_solns
     p_2 = rot(h_1, q_1)*p_02_0;
     
     % apply IK starting from the EE and moving towards the base
-    [q_7_solns, q_6_solns] = subproblem.sp_2(p_WE,R*p_WE_0, R*kin.H(:,7), -R*kin.H(:,6));
+    [q_7_solns, q_6_solns, q_67_is_LS] = subproblem.sp_2(p_WE,R*p_WE_0, R*kin.H(:,7), -R*kin.H(:,6));
+    if q_67_is_LS
+        continue
+    end
     
 
     for i_67 = 1:length(q_6_solns)
-       q_7 =  q_7_solns(i_67);
-       q_6 =  q_6_solns(i_67);
-       R_6 = R * rot(-kin.H(:,7), q_7) * rot(-kin.H(:,6), q_6);
-       [q_5_solns, q_4_solns] = subproblem.sp_2(p_2 - E, R_6*p_E2_0, R_6*kin.H(:,5), -R_6*kin.H(:,4));
+        q_7 =  q_7_solns(i_67);
+        q_6 =  q_6_solns(i_67);
+        R_6 = R * rot(-kin.H(:,7), q_7) * rot(-kin.H(:,6), q_6);
+        [q_5_solns, q_4_solns, q_45_is_LS] = subproblem.sp_2(p_2 - E, R_6*p_E2_0, R_6*kin.H(:,5), -R_6*kin.H(:,4));
+        if q_45_is_LS
+            continue
+        end
 
         for i_45 = 1:length(q_4_solns)
             q_5 =  q_5_solns(i_45);
             q_4 =  q_4_solns(i_45);
             R_4 = R_6 * rot(-kin.H(:,5), q_5) * rot(-kin.H(:,4), q_4);
-            [q_3_solns, q_2_solns] = subproblem.sp_2(-p_2,R_4*-p_02_0, R_4*kin.H(:,3), -R_4*kin.H(:,2));
+            [q_3_solns, q_2_solns, q_23_is_LS] = subproblem.sp_2(-p_2,R_4*-p_02_0, R_4*kin.H(:,3), -R_4*kin.H(:,2));
+            if q_23_is_LS
+                continue
+            end
 
             for i_23 = 1:length(q_2_solns)
                 q_2 = q_2_solns(i_23);

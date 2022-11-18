@@ -10,7 +10,7 @@ kin_W.joint_type = [0 0 0 0 0];
 kin_2 = kin;
 kin_2.joint_type = [0];
 
-%q = rand([7 1])*2*pi - pi
+q = rand([7 1])*2*pi - pi
 %q = zeros([7 1])
 
 [R_7,p] = fwdkin(kin, q)
@@ -44,6 +44,8 @@ WA_Y = vec_normalize(P_WE - WA_X*WA_X'*P_WE);
 
 WA = atan2(WA_Y'*P_WE, WA_X'*P_WE);
 
+
+%%
 % [alignment, q_solns] = alignment_given_wrist_angle(WA,kin,R,p,psi_conv,SEW)
 % 
 % q
@@ -62,11 +64,11 @@ for i = 1:length(WA_guesses)
     end
 end
 
-plot(WA_guesses, max_alignments);
-yline(1);
-xline(WA);
+% plot(WA_guesses, max_alignments);
+% yline(1);
+% xline(WA);
 
-plot(WA_guesses, alignment_mat)
+plot(WA_guesses, alignment_mat, '.')
 yline(1);
 xline(WA);
 xlabel("Wrist Angle (rad)")
@@ -133,6 +135,32 @@ hold off
 light('Position', [1 0 1], 'Color',  0.75*[1 0.9 0.9])
 light('Position', [0 1 1], 'Color',  [0.9 0.9 1])
 light('Position', [-1 -1 1], 'Color', 0.5*[0.9 0.9 1])
+
+%% Test q_67 alignment
+% global q_ap
+% q_ap = q;
+
+% Test on just the known correct wrist angle
+% [alignment, q_solns_partial] = q67_alignment_given_wrist_angle(WA,kin,R,p,psi_conv,SEW);
+
+%WA_guesses = linspace(0.3,1.1, 20000);
+alignment_mat_67 = NaN([length(WA_guesses) 16]);
+for i = 1:length(WA_guesses)
+    WA_guess = WA_guesses(i);
+    [alignment_vec, ~] = q67_alignment_given_wrist_angle(WA_guess,kin,R,p,psi_conv,SEW);
+    if ~isempty(alignment_vec)
+        alignment_mat_67(i,1:length(alignment_vec)) = alignment_vec;
+    end
+end
+
+
+plot(WA_guesses, alignment_mat_67, '.')
+yline(0);
+xline(WA);
+xlabel("Wrist Angle (rad)")
+ylabel("Alignment")
+title("Sawyer h_6, h_7 Alignment vs Wrist Angle")
+
 %%
 function n = vec_normalize(vec)
     n =  vec / norm(vec);
