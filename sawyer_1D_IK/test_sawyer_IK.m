@@ -1,4 +1,5 @@
 kin = define_sawyer();
+SEW = sew_conv([0;0;1]);
 
 kin_E = kin;
 kin_E.joint_type = [0 0 0];
@@ -22,16 +23,16 @@ p_S = kin.P(:,1);
 
 [~,p_2] = fwdkin(kin_2, q)
 
-psi_conv = conv_sew(p_S, p_E, p_W, [0;0;1])
+psi_conv = SEW.fwd_kin(p_S, p_E, p_W)
 
 
-zv = [0;0;0];
-kin_mat = [zv p_S p_E p_W p];
-plot3(kin_mat(1,:), kin_mat(2,:), kin_mat(3,:), '-xk')
-axis square
-xlabel("X")
-ylabel("Y")
-zlabel("Z")
+% zv = [0;0;0];
+% kin_mat = [zv p_S p_E p_W p];
+% plot3(kin_mat(1,:), kin_mat(2,:), kin_mat(3,:), '-xk')
+% axis square
+% xlabel("X")
+% ylabel("Y")
+% zlabel("Z")
 
 % wrist angle is measured from line from wrist to shoulder
 % X axis: shoulder - wrist
@@ -41,9 +42,9 @@ WA_X = vec_normalize(p_S - p_W);
 P_WE = p_E - p_W;
 WA_Y = vec_normalize(P_WE - WA_X*WA_X'*P_WE);
 
-WA = atan2(WA_Y'*P_WE, WA_X'*P_WE)
+WA = atan2(WA_Y'*P_WE, WA_X'*P_WE);
 
-% [alignment, q_solns] = alignment_given_wrist_angle(WA,kin,R,p,psi_conv,[0;0;1])
+% [alignment, q_solns] = alignment_given_wrist_angle(WA,kin,R,p,psi_conv,SEW)
 % 
 % q
 
@@ -54,7 +55,7 @@ max_alignments = NaN(size(WA_guesses));
 alignment_mat = NaN([length(WA_guesses) 16]);
 for i = 1:length(WA_guesses)
     WA_guess = WA_guesses(i);
-    [alignment_vec, ~] = alignment_given_wrist_angle(WA_guess,kin,R,p,psi_conv,[0;0;1]);
+    [alignment_vec, ~] = alignment_given_wrist_angle(WA_guess,kin,R,p,psi_conv,SEW);
     if ~isempty(alignment_vec)
         max_alignments(i) = max(alignment_vec);
         alignment_mat(i,1:length(alignment_vec)) = alignment_vec;
@@ -100,7 +101,7 @@ solutions = [];
 
 for i = 1:length(WA_angles)
     WA_i = WA_angles(i)
-    [alignment_vec, soln_mat] = alignment_given_wrist_angle(WA_i,kin,R,p,psi_conv,[0;0;1]);
+    [alignment_vec, soln_mat] = alignment_given_wrist_angle(WA_i,kin,R,p,psi_conv,SEW);
     solutions = [solutions soln_mat(:,alignment_vec>alignment_mins(i)-1e-6)];
 end
 
@@ -111,7 +112,7 @@ for q_i = solutions
     [~,p_E_i] = fwdkin(kin_E, q_i);
     [~,p_W_i] = fwdkin(kin_W, q_i);
     
-    psi_conv_i = conv_sew(p_S, p_E_i, p_W_i, [0;0;1]);
+    psi_conv_i = sew.fwd_kin(p_S, p_E_i, p_W_i);
     [norm(R_7_i - R_7) norm(p_i - p) norm(psi_conv_i - psi_conv)]
 end
 
