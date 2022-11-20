@@ -51,8 +51,7 @@ WA = atan2(WA_Y'*P_WE, WA_X'*P_WE);
 % q
 
 
-%WA_guesses = linspace(0, 2*pi, 1000);
-WA_guesses = linspace(0.3,1.1, 2000);
+WA_guesses = linspace(0, pi, 8000);
 max_alignments = NaN(size(WA_guesses));
 alignment_mat = NaN([length(WA_guesses) 16]);
 for i = 1:length(WA_guesses)
@@ -137,6 +136,33 @@ light('Position', [0 1 1], 'Color',  [0.9 0.9 1])
 light('Position', [-1 -1 1], 'Color', 0.5*[0.9 0.9 1])
 
 %% Test q_67 alignment
+
+%q = rand_angle([7 1])
+q = deg2rad([0
+     -100
+     50
+     -173
+     -25
+     -66
+     0])
+[R_7,p] = fwdkin(kin, q)
+R = R_7*kin.RT
+
+p_S = kin.P(:,1);
+
+[~,p_E] = fwdkin(kin_E, q)
+[~,p_W] = fwdkin(kin_W, q)
+
+[~,p_2] = fwdkin(kin_2, q)
+
+psi_conv = SEW.fwd_kin(p_S, p_E, p_W)
+
+WA_X = vec_normalize(p_S - p_W);
+P_WE = p_E - p_W;
+WA_Y = vec_normalize(P_WE - WA_X*WA_X'*P_WE);
+
+WA = atan2(WA_Y'*P_WE, WA_X'*P_WE);
+
 % global q_ap
 % q_ap = q;
 
@@ -160,7 +186,9 @@ xline(WA);
 xlabel("Wrist Angle (rad)")
 ylabel("Alignment")
 title("Sawyer h_6, h_7 Alignment vs Wrist Angle")
-
+%%
+[q_t, is_LS] = q_given_q12345(q(1:5), kin, R)
+[R_7_t1,p_t1] = fwdkin(kin, q_t)
 %%
 function n = vec_normalize(vec)
     n =  vec / norm(vec);
