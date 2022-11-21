@@ -10,7 +10,7 @@ kin_W.joint_type = [0 0 0 0 0];
 kin_2 = kin;
 kin_2.joint_type = [0];
 
-q = rand([7 1])*2*pi - pi
+%q = rand([7 1])*2*pi - pi
 %q = zeros([7 1])
 
 [R_7,p] = fwdkin(kin, q)
@@ -163,20 +163,15 @@ WA_Y = vec_normalize(P_WE - WA_X*WA_X'*P_WE);
 
 WA = atan2(WA_Y'*P_WE, WA_X'*P_WE);
 
-% global q_ap
-% q_ap = q;
 
-% Test on just the known correct wrist angle
-% [alignment, q_solns_partial] = q67_alignment_given_wrist_angle(WA,kin,R,p,psi_conv,SEW);
-
-%WA_guesses = linspace(0.3,1.1, 20000);
-alignment_mat_67 = NaN([length(WA_guesses) 16]);
+alignment_mat_67 = NaN([length(WA_guesses) 8]);
 for i = 1:length(WA_guesses)
     WA_guess = WA_guesses(i);
-    [alignment_vec, ~] = q67_alignment_given_wrist_angle(WA_guess,kin,R,p,psi_conv,SEW);
-    if ~isempty(alignment_vec)
-        alignment_mat_67(i,1:length(alignment_vec)) = alignment_vec;
-    end
+%    [alignment_vec, ~] = q67_alignment_given_wrist_angle(WA_guess,kin,R,p,psi_conv,SEW);
+%     if ~isempty(alignment_vec)
+%         alignment_mat_67(i,1:length(alignment_vec)) = alignment_vec;
+%     end
+    alignment_mat_67(i,:) = q67_alignment_given_wrist_angle(WA_guess,kin,R,p,psi_conv,SEW);
 end
 
 
@@ -186,6 +181,57 @@ xline(WA);
 xlabel("Wrist Angle (rad)")
 ylabel("Alignment")
 title("Sawyer h_6, h_7 Alignment vs Wrist Angle")
+legend(["1", "2", "3", "4", "5", "6", "7", "8"])
+%% Find zeros
+
+% plot(WA_guesses, alignment_mat_67(:,3), '.')
+% yline(0);
+
+plot(WA_guesses(1:end-1), diff(alignment_mat_67<0), '.')
+
+zero_cross_direction = diff(alignment_mat_67<0);
+has_zero_cross = sum(abs(zero_cross_direction), 2);
+WA_crossings_left = WA_guesses(has_zero_cross==1)
+WA_crossings_right = WA_guesses([false; has_zero_cross==1])
+
+plot(WA_guesses, alignment_mat_67, '.')
+yline(0);
+xline(WA_crossings_left);
+
+%% Linear interpolation to find closer zero crossing
+[~, closest_ind] = min(abs(alignment_mat_67), [], 2);
+closest_alignment_mat_67 = NaN(size(WA_guesses));
+for i = 1:length(WA_guesses)
+    closest_alignment_mat_67(i) = alignment_mat_67(i,closest_ind(i));
+end
+plot(WA_guesses, closest_alignment_mat_67, '.')
+yline(0);
+xline(WA_crossings_left);
+
+alignment_left = closest_alignment_mat_67(has_zero_cross==1);
+alignment_right = closest_alignment_mat_67([false; has_zero_cross==1]);
+
+n_zeros = length(WA_crossings_left);
+WA_crossings = NaN(1, n_zeros);
+for i = 1:n_zeros
+    WA_crossings(i) = interp1([alignment_left(i) alignment_right(i)],[WA_crossings_left(i) WA_crossings_right(i)],0);
+end
+
+
+%% Find q for each zero
+QQ = [];
+QQ_alignments = [];
+for WA_i = WA_crossings
+    [alignment, q_solns] = q67_alignment_given_wrist_angle(WA_i, kin, R, p, psi_conv, SEW);
+    
+    [min_alignment_i, i_min] = min(abs(alignment));
+    q = q_given_q12345(q_solns(:,i_min), kin, R);
+    QQ = [QQ q];
+    QQ_alignments = [QQ_alignments min_alignment_i];
+end
+
+QQ
+QQ_alignments
 %%
 [q_t, is_LS] = q_given_q12345(q(1:5), kin, R)
 [R_7_t1,p_t1] = fwdkin(kin, q_t)

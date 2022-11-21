@@ -2,8 +2,9 @@ function [alignment, q_solns_partial] = q67_alignment_given_wrist_angle(wrist_an
 if isfield(kin, 'RT')
     R = R * kin.RT';
 end
-q_solns_partial = [];
-alignment = [];
+q_solns_partial = NaN(5, 8);
+alignment = NaN(1, 8);
+i_soln = 1;
 
 p_W_EE_0 = kin.P(:,end);
 p_02_0 = sum(kin.P(:,1:2),2);
@@ -35,7 +36,10 @@ E = W + p_WE;
 % Find the position of O_2 = O_3,
 % which lies on the cone with axis h_1,
 % and lies a distance of d_2E from the elbow E
-q_1_solns = subproblem.sp_3(p_02_0, E, h_1, d_2E);
+[q_1_solns, q_1_is_LS] = subproblem.sp_3(p_02_0, E, h_1, d_2E);
+if q_1_is_LS
+    return
+end
 
 for q_1 = q_1_solns
     % Find q_2, q_3 with subproblem 2
@@ -49,6 +53,7 @@ for q_1 = q_1_solns
 
     [q_3_solns, q_2_solns, q_23_is_LS] = subproblem.sp_2(kin.P(:,4), R_10*p_17+R_10*p_WE-kin.P(:,2), kin.H(:,3), -kin.H(:,2));
     if q_23_is_LS
+        i_soln = i_soln + 4;
         continue
     end
     for i_23 = 1:length(q_2_solns)
@@ -61,6 +66,7 @@ for q_1 = q_1_solns
         % Find q_3, q_4 with subproblem 2
         [q_5_solns, q_4_solns, q_45_is_LS] = subproblem.sp_2(kin.P(:,6), R_32*R_21*(R_10*p_17-kin.P(:,2))-kin.P(:,4), kin.H(:,5), -kin.H(:,4));
         if q_45_is_LS
+            i_soln = i_soln + 2;
             continue
         end
         for i_45 = 1:length(q_4_solns)
@@ -70,8 +76,9 @@ for q_1 = q_1_solns
             R_45 = rot(kin.H(:,5), q_5);
             R_05 = R_10' * R_21' * R_32' * R_34 * R_45;
             e_i = kin.H(:,6)'* R_05' * R * kin.H(:,7) - kin.H(:,6)'*kin.H(:,7);
-            alignment = [alignment e_i];
-            q_solns_partial = [q_solns_partial [q_1; q_2; q_3; q_4; q_5]];
+            alignment(i_soln) = e_i;
+            q_solns_partial(:,i_soln) = [q_1; q_2; q_3; q_4; q_5];
+            i_soln = i_soln + 1;
         end
     end
 end
