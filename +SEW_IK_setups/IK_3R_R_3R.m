@@ -1,4 +1,4 @@
-classdef IK_3R_1R_3R
+classdef IK_3R_R_3R
     methods (Static)
         function [P, S] = setup()
             zv = [0;0;0];
@@ -42,8 +42,8 @@ classdef IK_3R_1R_3R
         end
 
         function generate_mex()
-            P = IK_setups.IK_3R_1R_3R.setup(); %#ok<NASGU> 
-            codegen -report +IK/IK_3R_1R_3R.m -args {P.R, P.T, P.sew, P.psi, P.GC, P.kin}
+            P = IK_setups.IK_3R_R_3R.setup(); %#ok<NASGU> 
+            codegen -report +IK/IK_3R_R_3R.m -args {P.R, P.T, P.sew, P.psi, P.GC, P.kin}
         end
 
         function [e, e_R, e_T, e_psi] = error(P, S)

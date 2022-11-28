@@ -67,7 +67,8 @@ for i_q12 = 1:length(t1)
 
             q_i = [q1; q2; q3; q4; q5; q6; q7];
             Q = [Q q_i];
-            is_LS_vec = [is_LS_vec [theta_SEW_is_LS; t12_is_ls; t34_is_ls; t56_is_ls; q7_is_ls]];
+            % is_LS_vec = [is_LS_vec [theta_SEW_is_LS; t12_is_ls; t34_is_ls; t56_is_ls; q7_is_ls]];
+            is_LS_vec = [is_LS_vec theta_SEW_is_LS || t12_is_ls || t34_is_ls || t56_is_ls ||q7_is_ls];
         end
     end
 

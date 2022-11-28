@@ -30,16 +30,16 @@ classdef IK_2R_2R_3R
         end
 
         function S = run(P)
-            [S.Q, S.is_LS] = IK.IK_2R_2R_3R(P.R, P.T, P.sew, P.psi, P.kin);
+            [S.Q, S.is_LS] = SEW_IK.IK_2R_2R_3R(P.R, P.T, P.sew, P.psi, P.kin);
         end
 
         function S = run_mex(P)
-            [S.Q, S.is_LS] = IK.IK_2R_2R_3R_mex(P.R, P.T, P.sew, P.psi, P.kin);
+            [S.Q, S.is_LS] = SEW_IK.IK_2R_2R_3R_mex(P.R, P.T, P.sew, P.psi, P.kin);
         end
 
         function generate_mex()
-            P = IK_setups.IK_2R_2R_3R.setup(); %#ok<NASGU> 
-            codegen -report +IK/IK_2R_2R_3R.m -args {P.R, P.T, P.sew, P.psi, P.kin}
+            P = SEW_IK_setups.IK_2R_2R_3R.setup(); %#ok<NASGU> 
+            codegen -report +SEW_IK/IK_2R_2R_3R.m -args {P.R, P.T, P.sew, P.psi, P.kin}
         end
 
         function [e, e_R, e_T, e_psi] = error(P, S)
