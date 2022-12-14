@@ -4,7 +4,7 @@ setups = {
 };
 
 %% Just 1 test
-setup = SEW_IK_setups.IK_2R_2R_3R;
+setup = SEW_IK_setups.IK_3R_R_3R;
 
 [P, S_given] = setup.setup();
 setup.error(P,S_given) % Make sure S_given is correct
@@ -14,7 +14,7 @@ S = setup.run(P);
 
 S.is_LS
     
-[e, e_R, e_T] = robot_IK_error(P,S);
+[e, e_R, e_T, e_psi] = setup.error(P,S);
 e
 
 S_exact.Q = S.Q(:,~S.is_LS);
