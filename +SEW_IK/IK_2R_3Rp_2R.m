@@ -61,7 +61,7 @@ for i_h = 1:length(t_h)
                 Q = [Q q_i];
 
                 %is_LS_vec = [is_LS_vec [t_h_is_lS; t12_is_LS; t3456_is_LS; q7_is_LS; t4_is_LS; q3_is_LS]];
-                is_LS_vec = [is_LS_vec [t_h_is_lS || t12_is_LS || t3456_is_LS || q7_is_LS || t4_is_LS || q3_is_LS]]
+                is_LS_vec = [is_LS_vec [t_h_is_lS || t12_is_LS || t3456_is_LS || q7_is_LS || t4_is_LS || q3_is_LS]];
             end
         end
     end
