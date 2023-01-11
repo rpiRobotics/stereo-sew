@@ -11,7 +11,7 @@ classdef IK_R_2R_2R_2R
             P.kin.P = [rand_vec rand_vec zv rand_vec zv rand_vec zv rand_vec];
             P.kin.H = rand_normal_vec(7);
 
-            [P.R, P.T, P_SEW] = fwdkin_inter(P.kin, S.Q, [1 3 6]);
+            [P.R, P.T, P_SEW] = fwdkin_inter(P.kin, S.Q, [1 4 6]);
             P.psi = P.sew.fwd_kin(P_SEW(:,1),P_SEW(:,2),P_SEW(:,3));
         end
 
@@ -34,7 +34,7 @@ classdef IK_R_2R_2R_2R
             e_psi = NaN([1 width(S.Q)]);
             
             for i = 1:width(S.Q)
-                [R_t, T_t, P_SEW_t] = fwdkin_inter(P.kin, S.Q(:,i), [1 3 6]);
+                [R_t, T_t, P_SEW_t] = fwdkin_inter(P.kin, S.Q(:,i), [1 4 6]);
                 e_R(i) = norm(R_t - P.R);
                 e_T(i) = norm(T_t - P.T);
                 
