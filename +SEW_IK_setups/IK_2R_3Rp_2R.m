@@ -18,6 +18,28 @@ classdef IK_2R_3Rp_2R
             P.psi = P.sew.fwd_kin(P_SW(:,1),P_SW(:,1) + h_3_0, P_SW(:,2));
         end
 
+%         function P = setup_LS()
+%             zv = [0;0;0];
+%             
+%             P.sew = sew_conv(rand_normal_vec);
+% 
+%             P.kin.joint_type = zeros(1,7);
+%             P.kin.P = [rand_vec zv rand_vec rand_vec rand_vec rand_vec zv zv]; % Task frame at wrist
+%             P.kin.H = rand_normal_vec(7);
+%             
+%             % Perpendicular shoulder joints
+%             P.kin.H(:,2) = rand_perp_normal_vec(P.kin.H(:,1));
+%             P.kin.H(:,3) = rand_perp_normal_vec(P.kin.H(:,2));
+%             P.kin.H(:,4) = P.kin.H(:,3);
+%             P.kin.H(:,5) = P.kin.H(:,3);
+%             P.kin.H(:,5) = rand_perp_normal_vec(P.kin.H(:,5));
+%             P.kin.H(:,6) = rand_perp_normal_vec(P.kin.H(:,6));
+% 
+%             P.R = rot(rand_normal_vec, rand_angle);
+%             P.T = 10*rand_vec;
+%             P.psi = rand_angle;
+%         end
+
         function S = run(P)
             [S.Q, S.is_LS] = SEW_IK.IK_2R_3Rp_2R(P.R, P.T, P.sew, P.psi, P.kin);
         end

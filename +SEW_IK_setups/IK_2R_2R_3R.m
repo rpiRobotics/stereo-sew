@@ -20,19 +20,20 @@ classdef IK_2R_2R_3R
             
             P.sew = sew_conv(rand_normal_vec);
 
-%             P.kin.joint_type = zeros(1,7);
-%             P.kin.P = [rand_vec zv rand_vec zv rand_vec zv zv zv]; % Task frame at spherical joint
-%             P.kin.H = rand_normal_vec(7);
-%             
-%             % 2R joints must be perpendicular to achieve any rotation
-%             P.kin.H(:,2) = rand_perp_normal_vec(P.kin.H(:,1));
-%             P.kin.H(:,4) = rand_perp_normal_vec(P.kin.H(:,3));
-% 
-%             % Spherical joint must have perpendicular joints
-%             P.kin.H(:,6) = rand_perp_normal_vec(P.kin.H(:,5));
-%             P.kin.H(:,7) = rand_perp_normal_vec(P.kin.H(:,6));
-            P.kin = robot_kin.spacebot();
-            P.kin.P(:,end) = 0;
+            P.kin.joint_type = zeros(1,7);
+            P.kin.P = [rand_vec zv rand_vec zv rand_vec zv zv zv]; % Task frame at spherical wrist
+            P.kin.H = rand_normal_vec(7);
+            
+            % 2R joints must be perpendicular to achieve any rotation
+            P.kin.H(:,2) = rand_perp_normal_vec(P.kin.H(:,1));
+            P.kin.H(:,4) = rand_perp_normal_vec(P.kin.H(:,3));
+
+            % Spherical joint must have perpendicular joints
+            P.kin.H(:,6) = rand_perp_normal_vec(P.kin.H(:,5));
+            P.kin.H(:,7) = rand_perp_normal_vec(P.kin.H(:,6));
+
+            P.kin.P(:,3) = (eye(3)-P.kin.H(:,2)*P.kin.H(:,2)')*P.kin.P(:,3); % Spherical elbow workspace
+            P.kin.P(:,5) = (eye(3)-P.kin.H(:,4)*P.kin.H(:,4)')*P.kin.P(:,5); % Spehrical wrist workspace (around elbow)
 
             P.R = rot(rand_normal_vec, rand_angle);
             P.T = 10*rand_vec;
