@@ -6,7 +6,7 @@ function kin = sawyer
     zv = zeros(3,1);
 
     kin.P = [0.317*ez a1*ex+d2*ey zv d3*ex -d4*ey d5*ex+d6*ey zv d7*ex];
-    kin.RT = eul2rotm(deg2rad([-90 -10 -90]));
+    %kin.RT = eul2rotm(deg2rad([-90 -10 -90]));
     kin.H=[ez ey ex ey ex ey ex];
     kin.joint_type=[0 0 0 0 0 0 0];
 end

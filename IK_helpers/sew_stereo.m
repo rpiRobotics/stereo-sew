@@ -38,14 +38,15 @@ classdef sew_stereo
                     n_phi'*obj.V);
         end
 
-        function k = inv_kin(obj, S, W, psi)
-            W_hat = vec_normalize(W-S);
+        function [e_CE, n_SEW] = inv_kin(obj, S, W, psi)
+            p_SW = W-S;
+            e_SW = vec_normalize(p_SW);
+            k_r = cross(e_SW - obj.R, obj.V);
+            k_x = cross(k_r, p_SW);
+            e_x = vec_normalize(k_x);
             
-            n_hat_ref = vec_normalize(cross(W_hat - obj.R, obj.V));
-            x_c = vec_normalize(cross(n_hat_ref, W_hat));
-            y_c = cross(W_hat, x_c);
-
-            k = x_c * cos(psi) + y_c * sin(psi);
+            e_CE = rot(e_SW, psi)*e_x;
+            n_SEW = cross(e_SW, e_CE);
         end
 
         function [J_e, J_w] = jacobian(obj, S, E, W)
