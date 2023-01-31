@@ -1,4 +1,6 @@
 function kin = kuka
+    % LBR iiwa 14 R820
+
     % ex = [1;0;0];
     ey = [0;1;0];
     ez = [0;0;1];
