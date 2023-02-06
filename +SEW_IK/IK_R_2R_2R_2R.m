@@ -1,9 +1,13 @@
-function [Q, is_LS_vec] = IK_R_2R_2R_2R(R_07, p_0T, SEW_class, psi, kin)
+function [Q, is_LS_vec] = IK_R_2R_2R_2R(R_07, p_0T, SEW_class, psi, kin, show_plot)
+if nargin < 6
+    show_plot = false;
+end
+
 Q = [];
 is_LS_vec = [];
 
 e_fun = @(WA)(q67_alignment_given_wrist_angle(WA, kin, R_07, p_0T, psi, SEW_class));
-[WA_vec, soln_num_vec] = search_1D(e_fun, -pi, 0, 1000, true);
+[WA_vec, soln_num_vec] = search_1D(e_fun, -pi, 0, 10000, show_plot);
 
 for i = 1:length(WA_vec)
     [~, q_solns_partial_i] = q67_alignment_given_wrist_angle(WA_vec(i), kin, R_07, p_0T, psi, SEW_class);
