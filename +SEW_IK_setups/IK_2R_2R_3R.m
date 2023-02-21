@@ -8,7 +8,7 @@ classdef IK_2R_2R_3R
             P.sew = sew_conv(rand_normal_vec);
 
             P.kin.joint_type = zeros(1,7);
-            P.kin.P = [zv zv rand_vec zv rand_vec zv zv rand_vec];
+            P.kin.P = [rand_vec zv rand_vec zv rand_vec zv zv rand_vec];
             P.kin.H = rand_normal_vec(7);
 
             [P.R, P.T, P_SEW] = fwdkin_inter(P.kin, S.Q, [1 3 5]);

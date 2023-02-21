@@ -19,21 +19,26 @@ end
 
 % Find zero crossings
 % Ignore very large crossings, as this may be caused by angle wrapping
-zero_cross_direction = diff(e_mat<0, 1,2)~=0 & abs(e_mat(:,2:end)) < pi/2 & abs(e_mat(:,1:end-1)) < pi/2;
+CROSS_THRESH = 0.1;
+zero_cross_direction = diff(e_mat<0, 1,2)~=0 & abs(e_mat(:,2:end)) < CROSS_THRESH & abs(e_mat(:,1:end-1)) < CROSS_THRESH;
 has_zero_cross = sum(abs(zero_cross_direction));
 crossings_left = x_sample_vec(has_zero_cross>0);
 crossings_right = x_sample_vec([false has_zero_cross>0]);
 
 crossing_soln_nums = zero_cross_direction(:,has_zero_cross>0);
 n_zeros = sum(crossing_soln_nums(:));
+
 % Iterate on each bracket
+options = optimset('Display','off', 'TolX', 1e-5);
 
 ind_soln = 1;
 x_vec = NaN(1, n_zeros);
 soln_num_vec = NaN(1, n_zeros);
 for i = 1:length(crossings_left)
-    for soln_num = find(crossing_soln_nums(:,i))'
-        x_vec(ind_soln) = fzero(@(x)(select_soln(fun(x),soln_num)), [crossings_left(i) crossings_right(i)]);
+    soln_nums = find(crossing_soln_nums(:,i));
+    for i_soln_num = 1:length(soln_nums)
+        soln_num = soln_nums(i_soln_num);
+        x_vec(ind_soln) = fzero(@(x)(select_soln(fun(x),soln_num)), [crossings_left(i) crossings_right(i)], options);
         soln_num_vec(ind_soln) = soln_num;
         ind_soln = ind_soln + 1;
     end
