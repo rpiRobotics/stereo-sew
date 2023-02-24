@@ -19,10 +19,7 @@ end
 
 end
 
-function [alignment, q_solns_partial] = q67_alignment_given_wrist_angle(wrist_angle, kin, R, T, psi, SEW)
-    if isfield(kin, 'RT')
-        R = R * kin.RT';
-    end
+function [alignment, q_solns_partial] = q67_alignment_given_wrist_angle(wrist_angle, kin, R_07, T, psi, SEW)
     q_solns_partial = NaN(5, 8);
     alignment = NaN(1, 8);
     i_soln = 1;
@@ -38,7 +35,7 @@ function [alignment, q_solns_partial] = q67_alignment_given_wrist_angle(wrist_an
     
     
     % Find wrist position
-    W = T - R * p_W_EE_0;
+    W = T - R_07 * p_W_EE_0;
     
     % Find shoulder position
     S = kin.P(:,1);
@@ -88,7 +85,7 @@ function [alignment, q_solns_partial] = q67_alignment_given_wrist_angle(wrist_an
                 R_34 = rot(kin.H(:,4), q_4);
                 R_45 = rot(kin.H(:,5), q_5);
                 R_05 = R_10' * R_21' * R_32' * R_34 * R_45;
-                e_i = kin.H(:,6)'* R_05' * R * kin.H(:,7) - kin.H(:,6)'*kin.H(:,7);
+                e_i = kin.H(:,6)'* R_05' * R_07 * kin.H(:,7) - kin.H(:,6)'*kin.H(:,7);
                 alignment(i_soln) = e_i;
                 q_solns_partial(:,i_soln) = [q_1; q_2; q_3; q_4; q_5];
                 i_soln = i_soln + 1;
@@ -98,11 +95,7 @@ function [alignment, q_solns_partial] = q67_alignment_given_wrist_angle(wrist_an
 
 end
 
-function [q, is_LS] = q_given_q12345(q12345, kin, R)
-    if isfield(kin, 'RT')
-        R = R * kin.RT';
-    end
-    
+function [q, is_LS] = q_given_q12345(q12345, kin, R_07)    
     R_01 = rot(kin.H(:,1), q12345(1));
     R_12 = rot(kin.H(:,2), q12345(2));
     R_23 = rot(kin.H(:,3), q12345(3));
@@ -110,22 +103,11 @@ function [q, is_LS] = q_given_q12345(q12345, kin, R)
     R_45 = rot(kin.H(:,5), q12345(5));
     R_05 = R_01*R_12*R_23*R_34*R_45;
     
-    p = kin.H(:,6); % Needs to be non-collinear to h_7
+    [q6, q6_is_LS] = subproblem.sp_1(kin.H(:,7), R_05'*R_07*kin.H(:,7),  kin.H(:,6));
+    [q7, q7_is_LS] = subproblem.sp_1(kin.H(:,6), R_07'*R_05*kin.H(:,6), -kin.H(:,7));
     
-    [q_7_solns, q_6_solns, is_LS] = subproblem.sp_2(p, R_05'*R*p, kin.H(:,7), -kin.H(:,6));
-    
-    % Remove extraneous solution
-    R_56 = rot(kin.H(:,6), q_6_solns(1));
-    R_67 = rot(kin.H(:,7), q_7_solns(1));
-    
-    R_07_test = R_05 * R_56 * R_67;
-    
-    if norm(R_07_test - R) < 1e-6 || is_LS
-        q = [q12345; q_6_solns(1); q_7_solns(1)];
-    else
-        q = [q12345; q_6_solns(2); q_7_solns(2)];
-    end
-
+    q = [q12345; q6; q7];
+    is_LS = q6_is_LS || q7_is_LS;
 end
 
 
