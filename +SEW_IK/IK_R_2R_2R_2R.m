@@ -7,7 +7,7 @@ Q = [];
 is_LS_vec = [];
 
 e_fun = @(WA)(q67_alignment_given_wrist_angle(WA, kin, R_07, p_0T, psi, SEW_class));
-[WA_vec, soln_num_vec] = search_1D(e_fun, -pi, 0, 10000, show_plot);
+[WA_vec, soln_num_vec] = search_1D(e_fun, -pi, 0, 200, show_plot);
 
 for i = 1:length(WA_vec)
     [~, q_solns_partial_i] = q67_alignment_given_wrist_angle(WA_vec(i), kin, R_07, p_0T, psi, SEW_class);

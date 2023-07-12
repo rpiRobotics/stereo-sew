@@ -43,7 +43,7 @@ classdef IK_R_R_3Rp_2R
                 
                 h_3_0_t = rot(P.kin.H(:,1), S.Q(1,i)) * rot(P.kin.H(:,2), S.Q(2,i)) * P.kin.H(:,3);
                 psi_t = P.sew.fwd_kin(P_SW_t(:,1),P_SW_t(:,1) + h_3_0_t,P_SW_t(:,2));
-                e_psi(i) = norm(psi_t - P.psi);
+                e_psi(i) = norm(wrapToPi(psi_t - P.psi));
             end
             e = e_R + e_T + e_psi;
         end

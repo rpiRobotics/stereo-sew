@@ -13,7 +13,7 @@ e_SW = p_17 / norm(p_17);
 
 [e_CE, n_SEW] = SEW_class.inv_kin(S, W, psi);
 
-[q1_vec, q2_vec, soln_num_vec] = search_2D(@q4_solvability_given_q12, -pi, pi, -pi, pi, 100, true);
+[q1_vec, q2_vec, soln_num_vec] = search_2D(@q4_solvability_given_q12, -pi, pi, -pi, pi, 100, false);
 
 for i = 1:length(q1_vec)
     [~, Q123_567] = q4_solvability_given_q12(q1_vec(i), q2_vec(i));

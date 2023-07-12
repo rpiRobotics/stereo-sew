@@ -14,7 +14,7 @@ e_SW = p_17 / norm(p_17);
 [~, n_SEW] = SEW_class.inv_kin(S, W, psi);
 
 %e_fun = @(TS)(q4_solvability_given_TS(TS));
-[TS_vec, soln_num_vec] = search_1D(@q4_solvability_given_TS, 0, pi, 10000, true);
+[TS_vec, soln_num_vec] = search_1D(@q4_solvability_given_TS, 0, pi, 200, false);
 
 for i = 1:length(TS_vec)
     [~, q_solns_partial_i] = q4_solvability_given_TS(TS_vec(i));

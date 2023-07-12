@@ -6,7 +6,7 @@ W = p_0T - R_07 * kin.P(:,8);
 p_1W = W - kin.P(:,1);
 
 e_fun = @(q1)(wrapToPi(psi_given_q1(q1) - psi));
-[q1_vec, soln_num_vec] = search_1D(e_fun, -pi, pi, 10000, show_plot);
+[q1_vec, soln_num_vec] = search_1D(e_fun, -pi, pi, 200, show_plot);
 
 for i_q1 = 1:length(q1_vec)
     [~, partial_Q] = psi_given_q1(q1_vec(i_q1));

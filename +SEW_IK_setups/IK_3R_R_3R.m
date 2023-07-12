@@ -61,7 +61,7 @@ classdef IK_3R_R_3R
                 e_T(i) = norm(T_t - P.T);
                 
                 psi_t = P.sew.fwd_kin(P_SEW_t(:,1),P_SEW_t(:,2),P_SEW_t(:,3));
-                e_psi(i) = norm(psi_t - P.psi);
+                e_psi(i) = norm(wrapToPi(psi_t - P.psi));
             end
             e = e_R + e_T + e_psi;
         end

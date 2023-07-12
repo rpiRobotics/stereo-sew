@@ -16,7 +16,7 @@ classdef IK_R_2R_R_3R_SJ2
         end
 
         function S = run(P)
-            [S.Q, S.is_LS] = SEW_IK.IK_R_2R_R_3R_SJ2(P.R, P.T, P.sew, P.psi, P.kin, true);
+            [S.Q, S.is_LS] = SEW_IK.IK_R_2R_R_3R_SJ2(P.R, P.T, P.sew, P.psi, P.kin, false);
         end
 
         function S = run_mex(P)
@@ -39,7 +39,7 @@ classdef IK_R_2R_R_3R_SJ2
                 e_T(i) = norm(T_t - P.T);
                 
                 psi_t = P.sew.fwd_kin(P_SEW_t(:,1),P_SEW_t(:,2),P_SEW_t(:,3));
-                e_psi(i) = norm(psi_t - P.psi);
+                e_psi(i) = norm(wrapToPi(psi_t - P.psi));
             end
             e = e_R + e_T + e_psi;
         end
