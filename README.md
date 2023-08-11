@@ -3,7 +3,7 @@
 Implementation of stereographic SEW (shoulder-elbow-wrist) angle for 7-DOF robot arms as well as inverse kinematics solutions for a number of 7-dof arms from ["Redundancy parameterization and inverse kinematics of 7-DOF revolute manipulators"](https://arxiv.org/abs/2307.13122).
 The IK procedures also work with the conventional SEW angle.
 
-For 6-dof IK solutions see [linear-subproblem-solutions](https://github.com/rpiRobotics/linear-subproblem-solutions). Code in this repo depends on that code.
+For 6-dof IK solutions see [ik-geo](https://github.com/rpiRobotics/ik-geo). Code in this repo depends on that code.
 
 Also depends on [matlab-diagrams](https://github.com/aelias36/matlab-diagrams) for a few visualizations
 
