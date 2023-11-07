@@ -7,6 +7,12 @@ For 6-dof IK solutions see [ik-geo](https://github.com/rpiRobotics/ik-geo). Code
 
 Also depends on [matlab-diagrams](https://github.com/aelias36/matlab-diagrams) for a few visualizations
 
+## Interactive Demos
+
+[Conventional SEW Angle](https://www.geogebra.org/m/ftpsw5ut)
+
+[Stereographic SEW Angle](https://www.geogebra.org/m/z4ss2jmg)
+
 ## Folder Breakdown
 
 `+SEW_IK`: Inverse kinematics solutions for different robot types
