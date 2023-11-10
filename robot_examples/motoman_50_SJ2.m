@@ -3,42 +3,39 @@
 % the 4 branches in the 1D search always come in equal pairs
 % This means the search time can be cut in half
 
-
 ex = [1;0;0];
 ey = [0;1;0];
 ez = [0;0;1];
 zv = zeros(3,1);
 
-kin = SIA50D_search();
+kin = SIA50D_search(); % Write kinematics s.t. frames (2,3), (5,6,7) are coincident
 SEW = sew_conv(rot(ey,-pi/4)*ez);
 
-%q = [0 -pi/4 0 pi/2 0 -pi/4 0];
+% q = [0 -pi/4 0 pi/2 0 -pi/4 0];
 % q = [0.1, -0.7, -0.2, +1.5, 0.15, -0.8, 0.1];
 q = rand_angle([7 1]);
 
-[R, T, P_SEW] = fwdkin_inter(kin, q, [2 4 5]);
-p_S = P_SEW(:,1);
-p_E = P_SEW(:,2);
-p_W = P_SEW(:,3);
+[R_07, p_0T, P_SEW] = fwdkin_inter(kin, q, [2 4 5]);
+p_S = P_SEW(:,1); % Shoulder (NOT constant in this example!)
+p_E = P_SEW(:,2); % Elbow
+p_W = P_SEW(:,3); % Wrist
 
-T;
-R;
-psi = SEW.fwd_kin(p_S, p_E, p_W);
+psi = SEW.fwd_kin(p_S, p_E, p_W); % SEW angle
 
-[Q, is_LS] = SEW_IK.IK_R_2R_R_3R_SJ2(R, T, SEW, psi, kin, true);
-%xline(q(1));
+[Q, is_LS] = SEW_IK.IK_R_2R_R_3R_SJ2(R_07, p_0T, SEW, psi, kin, true);
+xline(q(1) + [-.05 .05], 'r'); % Draw expected solution in red
 xlabel("q_1")
 ylabel("SEW error")
-% length(is_LS)
+
 S.Q = Q;
 P.kin = kin;
 P.R = R;
-P.T = T;
+P.T = p_0T;
 P.sew = SEW;
 P.psi = psi;
-[e, e_R, e_T, e_psi] = error(P, S)
+[e, e_R, e_T, e_psi] = error(P, S) % Error should be small
 
-%%
+%% Visualize solution
 kin = robot_kin.SIA50D;
 
 h_fig = diagrams.setup;
@@ -62,6 +59,10 @@ diagrams.redraw()
 %%
 
 function [e, e_R, e_T, e_psi] = error(P, S)
+    % Given IK problem P and solution S
+    % Calculate rotation error e_R, translation error e_T,
+    % SEW angle e_psi, and total error e
+
     e_R = NaN([1 width(S.Q)]);
     e_T = NaN([1 width(S.Q)]);
     e_psi = NaN([1 width(S.Q)]);
