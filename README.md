@@ -71,7 +71,7 @@ Right click on each folder in MATLAB and click `Add To Path > Selected Folders a
 IK-Geo uses the product of exponentials convention to define the robot kinematic parameters.
 (If you already have the Denavit-Hartenberg parameters, you can use [dh_to_kin.m](https://github.com/rpiRobotics/ik-geo/blob/main/matlab/robot_IK_helpers/dh_to_kin.m) to convert.)
 
-Kinematic parameters for the  KUKA LBR iiwa 14 R820 are already defined in [+robot_kin/kuka.m](+robot_kin/kuka.m). The columns of `kin.P`are $p_{i, i+1}$ and $p_{7T}$, the columns of `kin.H` are $h_{i}$, and `kin.joint_type` is all zeros because all joints are revolute.
+Kinematic parameters for the  KUKA LBR iiwa 14 R820 are already defined in [+robot_kin/kuka.m](%2Brobot_kin/kuka.m). The columns of `kin.P`are $p_{i, i+1}$ and $p_{7T}$, the columns of `kin.H` are $h_{i}$, and `kin.joint_type` is all zeros because all joints are revolute.
 
 ```MATLAB
 kin = robot_kin.kuka();
