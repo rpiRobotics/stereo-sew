@@ -7,7 +7,7 @@ Abstract: Seven degree-of-freedom (DOF) robot arms have one redundant DOF which 
 
 For examples using the polynomial method, see the [subproblem-polynomial](https://github.com/rpiRobotics/subproblem-polynomial) repo.
 
-For 6-DOF IK solutions see [ik-geo](https://github.com/rpiRobotics/ik-geo). Code in this repo depends on that code.
+For 6-DOF IK solutions see [ik-geo](https://github.com/rpiRobotics/ik-geo). **Code in this repo depends on that code.**
 
 This repo also depends on [matlab-diagrams](https://github.com/aelias36/matlab-diagrams) for a few visualizations.
 
