@@ -12,16 +12,14 @@ For 6-DOF IK solutions see [ik-geo](https://github.com/rpiRobotics/ik-geo). **Co
 This repo also depends on [matlab-diagrams](https://github.com/aelias36/matlab-diagrams) for a few visualizations.
 
 ## Interactive Demos
-
 [Conventional SEW Angle](https://www.geogebra.org/m/ftpsw5ut)
 
 [Stereographic SEW Angle](https://www.geogebra.org/m/z4ss2jmg)
 
 ## Multimedia Extensions
 
-[Comparing conventional and stereographic SEW angles](https://www.youtube.com/watch?v=Gc-zbK4IfPU)
-
-[Sawyer inverse kinematics solutions using 1D search](https://www.youtube.com/watch?v=4MpwNNHUA58)
+| [![](https://img.youtube.com/vi/Gc-zbK4IfPU/maxresdefault.jpg)](https://www.youtube.com/watch?v=Gc-zbK4IfPU) [Comparing conventional and stereographic SEW angles](https://www.youtube.com/watch?v=Gc-zbK4IfPU) | [![](https://img.youtube.com/vi/4MpwNNHUA58/maxresdefault.jpg)](https://www.youtube.com/watch?v=4MpwNNHUA58) [Sawyer inverse kinematics solutions using 1D search](https://www.youtube.com/watch?v=4MpwNNHUA58) |
+|-|-|
 
 
 ## Folder Breakdown
