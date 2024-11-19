@@ -18,7 +18,7 @@ This repo also depends on [matlab-diagrams](https://github.com/aelias36/matlab-d
 
 ## Multimedia Extensions
 
-| [![](https://img.youtube.com/vi/Gc-zbK4IfPU/maxresdefault.jpg)](https://www.youtube.com/watch?v=Gc-zbK4IfPU) [Comparing conventional and stereographic SEW angles](https://www.youtube.com/watch?v=Gc-zbK4IfPU) | [![](https://img.youtube.com/vi/4MpwNNHUA58/maxresdefault.jpg)](https://www.youtube.com/watch?v=4MpwNNHUA58) [Sawyer inverse kinematics solutions using 1D search](https://www.youtube.com/watch?v=4MpwNNHUA58) |
+| [![](https://img.youtube.com/vi/Gc-zbK4IfPU/maxresdefault.jpg)](https://www.youtube.com/watch?v=Gc-zbK4IfPU) <sub>[Comparing conventional and stereographic SEW angles](https://www.youtube.com/watch?v=Gc-zbK4IfPU)</sub> | [![](https://img.youtube.com/vi/4MpwNNHUA58/maxresdefault.jpg)](https://www.youtube.com/watch?v=4MpwNNHUA58) <sub>[Sawyer inverse kinematics solutions using 1D search](https://www.youtube.com/watch?v=4MpwNNHUA58)</sub> |
 |-|-|
 
 
