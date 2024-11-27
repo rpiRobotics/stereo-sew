@@ -13,7 +13,7 @@ e_SW = p_17 / norm(p_17);
 
 [e_CE, n_SEW] = SEW_class.inv_kin(S, W, psi);
 
-[q1_vec, q2_vec, soln_num_vec] = search_2D(@q4_solvability_given_q12, -pi, pi, -pi, pi, 100, false);
+[q1_vec, q2_vec, soln_num_vec] = search_2D(@q4_solvability_given_q12, -pi, pi, -pi, pi, 5000, false);
 
 for i = 1:length(q1_vec)
     [~, Q123_567] = q4_solvability_given_q12(q1_vec(i), q2_vec(i));
@@ -89,7 +89,7 @@ function [q, is_LS] = q_given_q123_567(q123_567)
     R_03 = R_01*R_12*R_23;
     R_47 = R_45*R_56*R_67;
 
-    p = kin.H(:,2); % Can't be collinear with h_1
+    p = kin.H(:,3); % Can't be collinear with h_4
     [q4, is_LS] = subproblem.sp_1(p, R_03'*R_07*R_47'*p, kin.H(:,4));
     q = [q123_567(1:3); q4; q123_567(4:6)];
 end
