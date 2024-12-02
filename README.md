@@ -1,4 +1,4 @@
-# Stereographic SEW Angle
+![](https://github.com/user-attachments/assets/53a64f99-9f85-4cd7-ad97-a3e2f4682746)
 
 Implementation of stereographic SEW (shoulder-elbow-wrist) angle for 7-DOF robot arms as well as inverse kinematics solutions for a number of 7-DOF arms from ["Redundancy parameterization and inverse kinematics of 7-DOF revolute manipulators"](https://www.sciencedirect.com/science/article/pii/S0094114X24002519).
 The IK procedures also work with the conventional SEW angle.
